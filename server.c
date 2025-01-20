@@ -12,8 +12,17 @@ int num_threads;
 pthread_t *worker_threads;
 threads_stats *stats;
 
+void initStats(threads_stats t, int id){
+    t->id = id;
+    t->stat_req = 0;
+    t->dynm_req = 0;
+    t->total_req =0;
+}
+
 void *worker_thread_function(void *arg) {
     int thread_id = *(int *)arg;
+    threads_stats t = malloc(sizeof(threads_stats));
+    initStats(t, thread_id);
     free(arg);
     while (1) {
         Request *req = dequeue(request_queue);

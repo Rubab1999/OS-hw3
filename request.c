@@ -207,6 +207,7 @@ int getRequestMetaData(int fd /*, int* est* for future use ignore this*/)
 // handle a request
 void requestHandle(int fd, struct timeval arrival, struct timeval dispatch, threads_stats t_stats)
 {
+	(t_stats->total_req)++;
 	int is_static;
 	struct stat sbuf;
 	char buf[MAXLINE], method[MAXLINE], uri[MAXLINE], version[MAXLINE];
@@ -218,6 +219,7 @@ void requestHandle(int fd, struct timeval arrival, struct timeval dispatch, thre
 	sscanf(buf, "%s %s %s", method, uri, version);
 
 	if (strcasecmp(method, "GET") && strcasecmp(method, "REAL")) {
+		
 		requestError(fd, method, "501", "Not Implemented", "OS-HW3 Server does not implement this method", arrival, dispatch, t_stats);
 		return;
 	}
